@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0f172a">
+    <title>PrepMaster - Interview Prep</title>
+    <meta name="description"
+        content="800+ curated QA interview questions. Master Selenium, Java, API Testing, and more.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="top-navbar">
+        <div class="navbar-left">
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="brand">
+                <i class="fa-solid fa-rocket"></i>
+                <span class="brand-name">PrepMaster</span>
+            </div>
+        </div>
+        <div class="navbar-center">
+            <span class="tagline">800+ Curated QA Interview Questions</span>
+        </div>
+        <div class="navbar-right">
+            <div class="search-wrapper">
+                <div class="search-container">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="searchInput"
+                        placeholder="Search all topics... (e.g., 'POM', 'Waits', 'API')">
+                    <button class="search-clear" id="searchClear"><i class="fa-solid fa-times"></i></button>
+                </div>
+                <div class="search-dropdown" id="searchDropdown">
+                    <div class="search-suggestions" id="searchSuggestions">
+                        <div class="suggestion-label">Popular searches:</div>
+                        <div class="suggestion-chips">
+                            <span class="suggestion-chip" data-query="Page Object Model">POM</span>
+                            <span class="suggestion-chip" data-query="Selenium Waits">Waits</span>
+                            <span class="suggestion-chip" data-query="Rest Assured">REST API</span>
+                            <span class="suggestion-chip" data-query="TestNG annotations">TestNG</span>
+                            <span class="suggestion-chip" data-query="XPath">XPath</span>
+                        </div>
+                    </div>
+                    <div class="search-results-preview" id="searchResultsPreview">
+                        <!-- Results injected by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <button class="sidebar-close" id="closeSidebar"><i class="fa-solid fa-times"></i></button>
+
+            <!-- Sidebar Search (Mobile) -->
+            <div class="sidebar-search">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" id="sidebarSearchInput" placeholder="Search...">
+            </div>
+
+            <div class="nav-section">
+                <ul id="topicList" class="nav-links">
+                    <li class="active" data-topic="all">
+                        <i class="fa-solid fa-layer-group"></i> All Topics
+                        <span class="topic-count" id="allTopicsCount">0</span>
+                    </li>
+                </ul>
+
+                <!-- Collapsible Topic Groups -->
+                <div class="topic-groups" id="topicGroups">
+                    <!-- Groups injected by JS -->
+                </div>
+            </div>
+
+            <!-- Progress Dashboard -->
+            <div class="progress-dashboard">
+                <h4><i class="fa-solid fa-chart-line"></i> My Progress</h4>
+                <div class="progress-stats">
+                    <div class="progress-stat">
+                        <span class="progress-number" id="completedCount">0</span>
+                        <span class="progress-label">Completed</span>
+                    </div>
+                    <div class="progress-stat">
+                        <span class="progress-number" id="reviseCount">0</span>
+                        <span class="progress-label">To Revise</span>
+                    </div>
+                    <div class="progress-stat">
+                        <span class="progress-number" id="starredCount">0</span>
+                        <span class="progress-label">Starred</span>
+                    </div>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <div class="progress-text" id="progressText">0% Complete</div>
+                <div class="quick-links">
+                    <button class="quick-link-btn" id="showRevision">
+                        <i class="fa-solid fa-rotate"></i> Revision Queue
+                    </button>
+                    <button class="quick-link-btn" id="showStarred">
+                        <i class="fa-solid fa-star"></i> Starred
+                    </button>
+                </div>
+            </div>
+
+            <div class="nav-bottom">
+                <div class="stats-card">
+                    <div class="stat-row">
+                        <span>Total Questions</span>
+                        <strong id="totalCount">0</strong>
+                    </div>
+                    <div class="stat-row">
+                        <span>High Priority</span>
+                        <strong id="highPriorityCount">0</strong>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <div class="filter-section">
+                    <label>Difficulty:</label>
+                    <div class="filter-buttons" id="difficultyFilter">
+                        <button class="filter-btn active" data-value="all">All</button>
+                        <button class="filter-btn" data-value="Basic"><span class="diff-dot basic"></span>Basic</button>
+                        <button class="filter-btn" data-value="Intermediate"><span
+                                class="diff-dot intermediate"></span>Intermediate</button>
+                        <button class="filter-btn" data-value="Advanced"><span
+                                class="diff-dot advanced"></span>Advanced</button>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <label>Status:</label>
+                    <div class="filter-buttons" id="statusFilter">
+                        <button class="filter-btn active" data-value="all">All</button>
+                        <button class="filter-btn" data-value="done" title="Questions you've completed"><i
+                                class="fa-solid fa-check"></i> Done</button>
+                        <button class="filter-btn" data-value="revise" title="Questions marked for revision"><i
+                                class="fa-solid fa-rotate"></i> Revise</button>
+                        <button class="filter-btn" data-value="starred" title="Your bookmarked questions"><i
+                                class="fa-solid fa-star"></i> Starred</button>
+                        <button class="filter-btn" data-value="pending" title="Questions not yet completed"><i
+                                class="fa-regular fa-circle"></i> Not Done</button>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <label>Sort:</label>
+                    <select id="sortSelect">
+                        <option value="priority">🔥 High Priority</option>
+                        <option value="difficulty">💪 Hardest First</option>
+                        <option value="alphabetical">🔤 A-Z</option>
+                        <option value="completed">✅ Completed First</option>
+                        <option value="newest">🆕 Newest</option>
+                    </select>
+                </div>
+                <div class="filter-section">
+                    <label>View:</label>
+                    <div class="filter-buttons" id="viewFilter">
+                        <button class="filter-btn active" data-value="cards">Topic Cards</button>
+                        <button class="filter-btn" data-value="list">All Questions</button>
+                    </div>
+                </div>
+                <button class="reset-filters-btn" id="resetFilters">
+                    <i class="fa-solid fa-times"></i> Reset
+                </button>
+            </div>
+
+            <!-- Active Filters Indicator -->
+            <div class="active-filters" id="activeFilters" style="display: none;">
+                <span class="active-filters-label">Active filters:</span>
+                <div class="active-filter-tags" id="activeFilterTags"></div>
+                <div class="filter-warning" id="filterWarning"></div>
+            </div>
+
+            <!-- Page Header -->
+            <header class="page-header">
+                <h1 id="currentTopicTitle">All Topics</h1>
+                <p id="currentTopicSubtitle">Browse by topic or search for specific questions</p>
+            </header>
+
+            <!-- Topic Cards View -->
+            <div id="topicCardsView" class="topic-cards-view">
+                <!-- Topic cards injected by JS -->
+            </div>
+
+            <!-- Questions List View -->
+            <div id="questionsGrid" class="questions-grid" style="display: none;">
+                <div class="loading-spinner">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i> Loading...
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-nav">
+        <button class="mobile-nav-btn" id="menuBtn">
+            <i class="fa-solid fa-folder"></i>
+            <span>Topics</span>
+        </button>
+        <button class="mobile-nav-btn active" id="homeBtn">
+            <i class="fa-solid fa-home"></i>
+            <span>Home</span>
+        </button>
+        <button class="mobile-nav-btn" id="progressBtn">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Progress</span>
+        </button>
+    </nav>
+
+    <!-- Answer Modal -->
+    <div id="answerModal" class="modal-overlay">
+        <div class="modal-content">
+            <!-- Modal Navigation -->
+            <div class="modal-nav">
+                <button class="modal-nav-btn" id="prevQuestion" title="Previous">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <span class="modal-nav-counter" id="modalCounter">1 of 10</span>
+                <button class="modal-nav-btn" id="nextQuestion" title="Next">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <div class="modal-header">
+                <div class="modal-badges" id="modalBadges"></div>
+                <button class="modal-close" id="closeModal"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <h2 class="modal-question" id="modalQuestion"></h2>
+            <div class="modal-answer-wrapper">
+                <div class="modal-answer" id="modalAnswer"></div>
+            </div>
+            <div class="modal-actions">
+                <button class="action-btn done-btn" id="markDone" title="Mark as complete">
+                    <i class="fa-solid fa-check"></i> Done
+                </button>
+                <button class="action-btn revise-btn" id="markRevise" title="Add to revision queue">
+                    <i class="fa-solid fa-rotate"></i> Revise
+                </button>
+                <button class="action-btn star-btn" id="markStar" title="Bookmark this question">
+                    <i class="fa-regular fa-star"></i> Star
+                </button>
+            </div>
+            <a href="#" target="_blank" class="modal-link" id="modalLink">
+                <i class="fa-solid fa-external-link-alt"></i> <span id="modalLinkText">Learn More</span>
+            </a>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+
+</html>
